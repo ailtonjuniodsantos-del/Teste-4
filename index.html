@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Minha Garota ❤️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Playfair+Display:ital,wght=0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- ESTILOS GERAIS & COQUETTE VIBES --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fcfbfa;
+            color: #2b2b2b;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 15px;
+        }
+
+        /* Fundo padrão baseado na imagem das flores e papel */
+        .bg-floral {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('1000007701.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.12; /* Sutil para manter excelente contraste de leitura */
+            z-index: -2;
+        }
+
+        /* Corações flutuantes no fundo da última página */
+        #heart-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-heart {
+            position: absolute;
+            bottom: -20px;
+            color: #d4a373;
+            font-size: 14px;
+            opacity: 0.5;
+            animation: floatUp 6s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-105vh) translateX(50px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Container de Páginas Otimizado */
+        .page {
+            display: none; /* Controlado via JS */
+            width: 100%;
+            max-width: 420px;
+            padding: 45px 30px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 163, 115, 0.25);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04);
+            text-align: center;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            
+            /* Preparação para o efeito fade-in lento e suave */
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Classe aplicada via JS para disparar a transição suave */
+        .page.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Tipografia */
+        h1, h2 {
+            font-family: 'Cinzel', serif;
+            font-weight: 400;
+            font-size: 1.45rem;
+            letter-spacing: 2px;
+            color: #1a1a1a;
+            margin-bottom: 22px;
+        }
+
+        .serif-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.05rem;
+            line-height: 1.75;
+            color: #3d3d3d;
+            margin-bottom: 25px;
+            white-space: pre-line; /* Preserva os parágrafos longos */
+            text-align: justify;
+            text-justify: inter-word;
+        }
+
+        /* Botões Estilo Coquette Premium */
+        .btn-next {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background-color: #2b2b2b;
+            color: #ffffff;
+            border: none;
+            padding: 13px 38px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            margin-top: 10px;
+        }
+
+        .btn-next:hover {
+            background-color: #d4a373;
+            transform: translateY(-2px);
+        }
+
+        .btn-next:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Elementos Customizados da Página 1 */
+        .img-hero {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        /* --- MECÂNICA DA ROLETA (PÁGINA 3) --- */
+        .slot-machine {
+            background: rgba(253, 251, 247, 0.85);
+            border: 1px solid #d4a373;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            width: 100%;
+            box-shadow: inset 0 0 15px rgba(212,163,115,0.05);
+        }
+
+        .slot-title {
+            font-size: 0.8rem;
+            color: #8c7863;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .slots-container {
+            display: flex;
+            justify-content: space-between;
+            background: #ffffff;
+            border: 1px solid #e6dfd5;
+            border-radius: 6px;
+            padding: 12px;
+            overflow: hidden;
+        }
+
+        .slot-window {
+            width: 65px;
+            height: 65px;
+            border: 1px solid #f0eae1;
+            background: #faf9f6;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slot-reel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .slot-icon {
+            width: 65px;
+            height: 65px;
+            font-size: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+        }
+
+        .btn-spin {
+            background-color: #d4a373;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .slot-message {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            height: 20px;
+            color: #d4a373;
+            font-weight: 600;
+        }
+
+        /* --- CONTADOR EM TEMPO REAL (PÁGINA 5) --- */
+        .counter-box {
+            margin: 25px 0;
+            width: 100%;
+        }
+        
+        .counter-sub {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #7a7a7a;
+            margin-bottom: 12px;
+        }
+
+        .counter-days {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            color: #1a1a1a;
+            font-weight: 400;
+            padding: 12px 0;
+            border-top: 1px solid rgba(212, 163, 115, 0.3);
+            border-bottom: 1px solid rgba(212, 163, 115, 0.3);
+            display: block;
+            margin-bottom: 20px;
+            animation: smoothPulse 2s infinite ease-in-out;
+        }
+
+        @keyframes smoothPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); color: #d4a373; }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsividade Fina */
+        @media(max-width: 480px) {
+            .page {
+                padding: 35px 22px;
+            }
+            h1 { font-size: 1.3rem; }
+            .serif-text { font-size: 0.98rem; line-height: 1.65; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-floral"></div>
+    
+    <div id="heart-container"></div>
+
+    <section id="page1" class="page">
+        <img src="1000007698.jpg" alt="My Love" class="img-hero">
+        
+        <h1>Feliz Dia dos Namorados</h1>
+        <p class="serif-text">
+            Seja bem-vinda ao nosso cantinho. Criei este espaço inteiramente para você, tentando traduzir em linhas e detalhes um sentimento que mal cabe no meu peito. Hoje celebramos o amor, a cumplicidade e a escolha diária que fazemos de caminhar lado a lado. 
+            
+            Cada passo que daremos juntos por estas páginas guarda um pedaço da nossa história e dos sentimentos mais profundos que guardo por você. Prepare o seu coração e venha comigo...
+        </p>
+        <button class="btn-next" onclick="nextPage(2)">Continuar</button>
+    </section>
+
+    <section id="page2" class="page">
+        <h1>Para Minha Garota</h1>
+        <p class="serif-text">
+            É difícil colocar em palavras o impacto que você causou na minha vida desde que chegou. Você tem essa capacidade rara de transformar os dias mais cinzentos em momentos cheios de cor, apenas com o som da sua risada ou com a doçura do seu olhar. 
+            
+            Você é infinitamente linda, inteligente, engraçada e dona de uma alma tão generosa que me inspira a querer ser alguém melhor todos os dias. Ter você ao meu lado é ter a certeza de que encontrei o meu porto seguro, a minha melhor amiga e o meu amor mais sincero. Sou profundamente grato por cada detalhe seu e por cada memória linda que estamos construindo.
+        </p>
+        <button class="btn-next" onclick="nextPage(3)">Continuar</button>
+    </section>
+
+    <section id="page3" class="page">
+        <h1>Um Instante de Sorte</h1>
+        <p class="serif-text" style="text-align: center;">
+            Antes de continuarmos a nossa jornada, que tal deixarmos o destino brincar um pouco com a gente? Dizem que quando duas pessoas se amam de verdade, a sorte as persegue em cada pequeno detalhe.
+            
+            Preparei um pequeno teste de sorte para você. Gire a roleta e veja se o universo concorda com o que o meu coração grita todos os dias!
+        </p>
+        
+        <div class="slot-machine">
+            <div class="slot-title">Gire até conseguir 💞 💞 💞</div>
+            <div class="slots-container">
+                <div class="slot-window"><div id="reel1" class="slot-reel"></div></div>
+                <div class="slot-window"><div id="reel2" class="slot-reel"></div></div>
+                <div class="slot-window"><div id="reel3" class="slot-reel"></div></div>
+            </div>
+            <button id="spin-btn" class="btn-next btn-spin" onclick="spinReels()">Girar</button>
+            <div id="slot-msg" class="slot-message"></div>
+        </div>
+
+        <button id="slot-next-btn" class="btn-next" onclick="nextPage(4)" style="display: none;">Continuar</button>
+    </section>
+
+    <section id="page4" class="page">
+        <h1>Com Todo Meu Coração</h1>
+        <p class="serif-text">
+            Amar alguém de verdade também significa ter a maturidade de olhar para trás e reconhecer que nem todos os dias foram perfeitos. Sei que já cometi erros, que falhei em momentos que você precisava e que, sem querer, acabei machucando o seu coração.
+            
+            Quero te pedir desculpas, com toda a sinceridade e humildade que existem em mim. Meu arrependimento é real, e dói saber que causei qualquer linha de tristeza em seu rosto. Meu compromisso diário com você é aprender com cada tropeço, evoluir como homem e proteger o nosso amor com paciência, respeito e cuidado. Obrigado por não desistir de nós e por me ensinar o verdadeiro significado de perdoar.
+        </p>
+        <button class="btn-next" onclick="nextPage(5)">Continuar</button>
+    </section>
+
+    <section id="page5" class="page">
+        <h1>Nosso Tempo</h1>
+        
+        <div class="counter-box">
+            <p class="counter-sub">Quantidade de dias desde 16/12/2025</p>
+            <div id="days-display" class="counter-days">❤️ Estamos juntos há -- dias ❤️</div>
+        </div>
+
+        <p class="serif-text" style="text-align: center;">
+            Cada um desses dias foi um presente, uma página virada cheia de aprendizados, carinhos e certezas. Olhar para esse número me faz perceber que o tempo voa quando estou ao seu lado, mas também me enche de ansiedade boa para viver todos os milhares de dias que o futuro ainda nos reserva. 
+            
+            Você é a minha escolha de ontem, de hoje e de absolutamente todos os amanhãs da minha vida. Eu te amo além das palavras.
+        </p>
+    </section>
+
+    <script>
+        // Inicializa a primeira página com o efeito suave logo após o carregamento
+        document.addEventListener("DOMContentLoaded", () => {
+            const firstPage = document.getElementById('page1');
+            firstPage.style.display = 'flex';
+            // Pequeno delay para garantir que o display flex seja computado antes da opacidade
+            setTimeout(() => firstPage.classList.add('active'), 50);
+        });
+
+        // Transição de páginas fluida e lenta (Fade-In de 1.2 segundos)
+        function nextPage(pageNum) {
+            const activePage = document.querySelector('.page.active');
+            
+            if (activePage) {
+                // Começa sumindo com a página atual
+                activePage.classList.remove('active');
+                
+                // Aguarda o término do fade-out para trocar o display de fato
+                setTimeout(() => {
+                    activePage.style.display = 'none';
+                    
+                    // Prepara a próxima página
+                    const targetPage = document.getElementById(`page${pageNum}`);
+                    targetPage.style.display = 'flex';
+                    
+                    // Dispara o fade-in suave
+                    setTimeout(() => {
+                        targetPage.classList.add('active');
+                    }, 50);
+
+                    // Ativa os scripts específicos da última página
+                    if(pageNum === 5) {
+                        calculateDays();
+                        startFloatingHearts();
+                    }
+                }, 1200); // Tempo casado estritamente com a transição do CSS (1.2s)
+            }
+        }
+
+        // --- SISTEMA DO CAÇA-NÍQUEL (PÁGINA 3) ---
+        const icons = ['🍓', '🍒', '🍇', '🍎', '🍍', '💞'];
+        const reels = [document.getElementById('reel1'), document.getElementById('reel2'), document.getElementById('reel3')];
+        
+        reels.forEach(reel => {
+            reel.innerHTML = `<div class="slot-icon">🍓</div>`;
+        });
+
+        let isSpinning = false;
+
+        function spinReels() {
+            if (isSpinning) return;
+            isSpinning = true;
+            
+            const btn = document.getElementById('spin-btn');
+            const msg = document.getElementById('slot-msg');
+            btn.disabled = true;
+            msg.innerText = "Girando...";
+
+            const winProbability = Math.random() < 0.67;
+            let result = [];
+
+            if (winProbability) {
+                result = ['💞', '💞', '💞'];
+            } else {
+                for(let i=0; i<3; i++) {
+                    let randomIcon = icons[Math.floor(Math.random() * (icons.length - 1))];
+                    result.push(randomIcon);
+                }
+                if(Math.random() * 10 > 5) result[Math.floor(Math.random()*3)] = '💞';
+            }
+
+            reels.forEach((reel, index) => {
+                let itemsHTML = '';
+                for(let i = 0; i < 15; i++) {
+                    itemsHTML += `<div class="slot-icon">${icons[Math.floor(Math.random() * icons.length)]}</div>`;
+                }
+                itemsHTML += `<div class="slot-icon">${result[index]}</div>`;
+                
+                reel.innerHTML = itemsHTML;
+                reel.style.transition = 'none';
+                reel.style.top = '0px';
+                
+                void reel.offsetHeight; 
+                
+                const travelDistance = (reel.children.length - 1) * 65;
+                reel.style.transition = `top ${2 + index * 0.5}s cubic-bezier(0.25, 1, 0.5, 1)`;
+                reel.style.top = `-${travelDistance}px`;
+            });
+
+            setTimeout(() => {
+                isSpinning = false;
+                btn.disabled = false;
+
+                if (result[0] === '💞' && result[1] === '💞' && result[2] === '💞') {
+                    msg.innerHTML = "Que sorte! 💞 Você ganhou meu amor!";
+                    btn.style.display = 'none';
+                    document.getElementById('slot-next-btn').style.display = 'inline-block';
+                } else {
+                    msg.innerText = "Quase! Tente mais uma vez... ✨";
+                }
+            }, 3000);
+        }
+
+        // --- SISTEMA DO CONTADOR (PÁGINA 5) ---
+        function calculateDays() {
+            const startDate = new Date('2025-12-16T00:00:00');
+            const today = new Date();
+            const diffTime = Math.abs(today - startDate);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            document.getElementById('days-display').innerText = `❤️ Estamos juntos há ${diffDays} dias ❤️`;
+        }
+
+        // --- ANIMAÇÃO DE CORAÇÕES FLUTUANTES ---
+        function startFloatingHearts() {
+            const container = document.getElementById('heart-container');
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('floating-heart');
+                heart.innerText = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                container.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 7000);
+            }, 400);
+        }
+    </script>
+</body>
+</html>
